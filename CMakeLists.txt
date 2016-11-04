@@ -6,23 +6,34 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 find_package( OpenCV REQUIRED )
-MESSAGE("OpenCV information:") 
-MESSAGE("  OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}") 
-MESSAGE("  OpenCV_LIBRARIES: ${OpenCV_LIBRARIES}") 
-MESSAGE("  OpenCV_LIBRARY_DIRS: ${OpenCV_LIBRARY_DIRS}") 
+MESSAGE("OpenCV information:")
+MESSAGE("  OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
+MESSAGE("  OpenCV_LIBRARIES: ${OpenCV_LIBRARIES}")
+MESSAGE("  OpenCV_LIBRARY_DIRS: ${OpenCV_LIBRARY_DIRS}")
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 find_package( Boost 1.5.9 REQUIRED COMPONENTS filesystem system)
-MESSAGE("Boost information:") 
-MESSAGE("  Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}") 
-MESSAGE("  Boost_LIBRARIES: ${Boost_LIBRARIES}") 
-MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}") 
+MESSAGE("Boost information:")
+MESSAGE("  Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+MESSAGE("  Boost_LIBRARIES: ${Boost_LIBRARIES}")
+MESSAGE("  Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS}/boost)
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})	
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 find_package(TBB REQUIRED)
+
+# Move InmindEmotionDetector models
+file(GLOB files "lib/local/InmindEmotionDetector/model/*.txt")
+foreach(file ${files})
+	if (MSVC)
+		file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR}/bin/Debug/emotion_models)
+		file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR}/bin/Release/emotion_models)
+	else(MSVC)
+		file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR}/bin/emotion_models)
+	endif(MSVC)
+endforeach()
 
 # Move LandmarkDetector model
 file(GLOB files "lib/local/LandmarkDetector/model/*.txt")
@@ -150,8 +161,11 @@ add_subdirectory(lib/3rdParty/dlib)
 add_subdirectory(lib/local/LandmarkDetector)
 # Facial Expression analysis library
 add_subdirectory(lib/local/FaceAnalyser)
+# Inmind Confusion/Surprise library
+add_subdirectory(lib/local/InmindEmotionDetector)
 # executables
 add_subdirectory(exe/FaceLandmarkImg)
 add_subdirectory(exe/FaceLandmarkVid)
 add_subdirectory(exe/FaceLandmarkVidMulti)
 add_subdirectory(exe/FeatureExtraction)
+add_subdirectory(exe/InMindDemo)

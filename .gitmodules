@@ -1,0 +1,3 @@
+[submodule "exe/InMindDemo/cmake"]
+	path = exe/InMindDemo/cmake
+	url = git@github.com:chiragraman/cmake-modules.git

@@ -14,7 +14,7 @@ SET(SOURCE
 )
 
 SET(HEADERS
-    include/Face_utils.h	
+    include/Face_utils.h
 	include/FaceAnalyser.h
 	include/SVM_dynamic_lin.h
 	include/SVM_static_lin.h

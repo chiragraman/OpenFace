@@ -18,17 +18,17 @@ SET(SOURCE
 )
 
 SET(HEADERS
-    include/CCNF_patch_expert.h	
+    include/CCNF_patch_expert.h
     include/LandmarkCoreIncludes.h
 	include/LandmarkDetectionValidator.h
     include/LandmarkDetectorFunc.h
 	include/LandmarkDetectorModel.h
 	include/LandmarkDetectorParameters.h
 	include/LandmarkDetectorUtils.h
-	include/Patch_experts.h	
+	include/Patch_experts.h
     include/PAW.h
 	include/PDM.h
-	include/SVR_patch_expert.h		
+	include/SVR_patch_expert.h
 	include/stdafx.h
 )
 
