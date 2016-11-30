@@ -3,11 +3,12 @@
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-11-30T11:21:58-05:00
+* @Last modified time: 2016-11-30T14:11:11-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
 #include <iostream>
+#include <string>
 
 extern "C" {
 #include "libavcodec/avcodec.h"
@@ -23,14 +24,14 @@ extern "C" {
 #include "opencv2/highgui/highgui.hpp"
 
 #include <InmindEmotionDetector.h>
-#include "json/json.h"
+#include "json_dist/json/json.h"
 
 
 using namespace InmindDemo;
 
 // Use this to run from the camera with a device id like "/dev/video0" instead
 // of grabbing from an RTSP stream
-#define CAMERA_TEST (0)
+#define CAMERA_TEST (1)
 
 // Inmind sends pictures sideways over rtsp. This flag is used for correcting
 // the orientation of decoded images
@@ -232,6 +233,335 @@ int setup_rgb_frame(AVFrame *&frame, uint8_t *&buffer,
 /********
  * DECODE
  *******/
+
+std::string response_message() {
+    std::string json_str = "[ \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                              {\"Type\":\"TX\", \
+                                  \"Parameter\" : \"Frequency\" ,\
+                                  \"Value\" : \"5.17e9\" \
+                              } \
+                            ]";
+    Json::Value root;
+    Json::Reader reader;
+    reader.parse(json_str.c_str(), root);
+    Json::FastWriter fastwriter;
+    std::string message = fastwriter.write(root);
+    return message;
+}
+
+
  int decode_packet(AVPacket packet,
                    SwsContext *&sws_context,
                    int *got_frame,
@@ -293,6 +623,8 @@ int setup_rgb_frame(AVFrame *&frame, uint8_t *&buffer,
 
              std::string response_string = response_stream.str();
              std::cout << response_string << std::endl;
+
+             response_string = response_message();
 
              zmq::message_t response(response_string.size());
              memcpy(response.data(), response_string.data(),
