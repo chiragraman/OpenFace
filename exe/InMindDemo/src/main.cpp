@@ -3,7 +3,7 @@
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-08-29T15:06:26-04:00
+* @Last modified time: 2016-11-30T11:21:58-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -23,6 +23,7 @@ extern "C" {
 #include "opencv2/highgui/highgui.hpp"
 
 #include <InmindEmotionDetector.h>
+#include "json/json.h"
 
 
 using namespace InmindDemo;
