@@ -65,11 +65,12 @@ else()
 endif()
 
 # get all *.cpp files from src to build target
-file(GLOB SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*${SOURCE_EXT_PATTERN})
+file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*${SOURCE_EXT_PATTERN})
 source_group("Source Files" FILES ${SOURCE_FILES})
+message ("SOURCE FILES" = ${SOURCE_FILES})
 
 # for grouping header files in IDE project generation
-file(GLOB HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*${HEADER_EXT_PATTERN})
+file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*${HEADER_EXT_PATTERN})
 source_group("Headers" FILES ${HEADER_FILES})
 
 # set the executable output path
