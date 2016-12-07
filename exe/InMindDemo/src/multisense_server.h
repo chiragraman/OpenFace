@@ -3,7 +3,7 @@
 * @Date:   2016-07-29T14:35:48-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-08-02T10:54:51-04:00
+* @Last modified time: 2016-12-07T13:52:38-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -26,7 +26,7 @@ class MultisenseServer {
          int port;
      };
      std::unordered_map<std::string,Client> phone_clients_;
-     std::unordered_map<std::string,Pairserver> paired_servers_;
+//     std::unordered_map<std::string,Client> paired_servers_;
 
 
 };
