@@ -3,26 +3,19 @@
 * @Date:   2016-11-29T14:25:00-05:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-11-30T09:40:25-05:00
+* @Last modified time: 2016-12-07T13:46:54-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
-#ifndef EXE_INMIND_DEMO_VISUAL_FEATURE_EXTRACTOR_H_
-#define EXE_INMIND_DEMO_VISUAL_FEATURE_EXTRACTOR_H_
+#include "visual_feature_extractor.h"
 
 namespace inmind {
 
-class VisualFeatureExtractor {
- public:
-     VisualFeatureExtractor();
-     virtual ~VisualFeatureExtractor ();
- private:
-     /* data */
+void VisualFeatureExtractor::get_features(cv::Mat &image) {
 
 
-};
+}
+
+
 
 } /* inmind */
-
-
-#endif /* end of include guard: EXE_INMIND_DEMO_VISUAL_FEATURE_EXTRACTOR_H_ */
