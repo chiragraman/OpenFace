@@ -1,3 +1,14 @@
+/**
+* @Author: Chirag Raman <chirag>
+* @Date:   2016-11-04T11:11:49-04:00
+* @Email:  chirag.raman@gmail.com
+* @Last modified by:   chirag
+* @Last modified time: 2016-12-08T17:40:32-05:00
+* @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
+*/
+
+
+
 #include "InmindEmotionDetector.h"
 
 using namespace InmindDemo;
@@ -20,26 +31,62 @@ InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_
 
 }
 
-vector<double> InmindEmotionDetector::DetectEmotion(Mat frame, double time_stamp)
+vector<double> InmindEmotionDetector::DetectEmotion(Mat frame,
+													double time_stamp)
 {
+	// If optical centers are not defined just use center of image
+	cx = frame.cols / 2.0f;
+	cy = frame.rows / 2.0f;
+
+	// Use a rough guess-timate of focal length
+	fx = 500 * (frame.cols / 640.0);
+	fy = 500 * (frame.rows / 480.0);
+
+	fx = (fx + fy) / 2.0;
+	fy = fx;
+
+	//Reset data
 	result_emotions.clear();
+	current_AusReg.clear();
+	Vec6d pose_estimate;
+	vector<Point3f> gaze(2);
+
 	if (!isCfSet)
 	{
 		detector.set_cf(frame);
 	}
 	grayscale_image = detector.get_gray(frame);
-	detection_success = LandmarkDetector::DetectLandmarksInVideo(grayscale_image, face_model, det_parameters);
+	detection_success =
+		LandmarkDetector::DetectLandmarksInVideo(grayscale_image, face_model,
+												 det_parameters);
 	if (detection_success)
 	{
+		// Gaze tracking, absolute gaze direction
+		Point3f gaze_direction0(0, 0, -1);
+		Point3f gaze_direction1(0, 0, -1);
+		FaceAnalysis::EstimateGaze(face_model, gaze_direction0, fx, fy, cx, cy,
+								   true);
+		FaceAnalysis::EstimateGaze(face_model, gaze_direction1, fx, fy, cx, cy,
+								   false);
+		gaze[0] = gaze_direction0;
+		gaze[1] = gaze_direction1;
+
+		// Head pose estimation
+		pose_estimate = LandmarkDetector::GetCorrectedPoseWorld(
+			face_model, fx, fy, cx, cy);
+
 		// Do face alignment
-		face_analyser.AddNextFrame(frame, face_model, time_stamp, online, !det_parameters.quiet_mode);
+		face_analyser.AddNextFrame(frame, face_model, time_stamp, online,
+								   !det_parameters.quiet_mode);
 
 		// Get features
-		face_analyser.GetLatestHOG(hog_descriptor, detector.num_hog_rows, detector.num_hog_cols);
+		face_analyser.GetLatestHOG(hog_descriptor, detector.num_hog_rows,
+								   detector.num_hog_cols);
 		face_analyser.GetGeomDescriptor(geom_descriptor);
 
 		// Do predictions
-		face_analyser.PredictAUs(hog_descriptor, geom_descriptor, face_model, online);
+		face_analyser.PredictAUs(hog_descriptor, geom_descriptor, face_model,
+								 online);
 
 		// Get prediction results
 		current_AusReg = face_analyser.GetCurrentAUsReg();
@@ -61,6 +108,7 @@ vector<double> InmindEmotionDetector::DetectEmotion(Mat frame, double time_stamp
 		score_confusion = alpha * prev_confusion + (1-alpha) * score_confusion;
 		prev_confusion = score_confusion;
 	}
+
 	if(prev_surprise < 0)
 	{
 		prev_surprise = score_surprise;
@@ -70,24 +118,9 @@ vector<double> InmindEmotionDetector::DetectEmotion(Mat frame, double time_stamp
 		prev_surprise = score_surprise;
 	}
 
-	if (score_confusion >= threshold_confusion)
-	{
-		decision_confusion = 1.0;
+	decision_confusion = score_confusion >= threshold_confusion ? 1.0 : 0
+	decision_surprise = score_surprise >= threshold_surprise ? 1.0 : 0
 
-	}
-	else
-	{
-		decision_confusion = 0;
-	}
-
-	if (score_surprise >= threshold_surprise)
-	{
-		decision_surprise = 1.0;
-	}
-	else
-	{
-		decision_surprise = 0;
-	}
 	result_emotions.push_back(score_confusion);
 	result_emotions.push_back(score_surprise);
 	result_emotions.push_back(decision_confusion);
@@ -95,6 +128,7 @@ vector<double> InmindEmotionDetector::DetectEmotion(Mat frame, double time_stamp
 
 	return result_emotions;
 }
+
 void InmindEmotionDetector::visualize_emotions(Mat &frame)
 {
 	string face_detected = "false";
