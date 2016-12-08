@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T17:40:32-05:00
+* @Last modified time: 2016-12-08T18:00:06-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -50,6 +50,7 @@ vector<double> InmindEmotionDetector::DetectEmotion(Mat frame,
 	current_AusReg.clear();
 	Vec6d pose_estimate;
 	vector<Point3f> gaze(2);
+	vector<double> aus;
 
 	if (!isCfSet)
 	{
@@ -91,6 +92,12 @@ vector<double> InmindEmotionDetector::DetectEmotion(Mat frame,
 		// Get prediction results
 		current_AusReg = face_analyser.GetCurrentAUsReg();
 
+		// Extract the AU intensities
+		aus.reserve(current_AusReg.size());
+		for(size_t it = 0; it < current_AusReg.size(); ++it) {
+			aus.push_back(current_AusReg[it].second);
+		}
+
 		score_confusion = detector.predict_confusion(current_AusReg);
 		score_surprise = detector.predict_surprise(current_AusReg);
 	}
@@ -126,7 +133,7 @@ vector<double> InmindEmotionDetector::DetectEmotion(Mat frame,
 	result_emotions.push_back(decision_confusion);
 	result_emotions.push_back(decision_surprise);
 
-	return result_emotions;
+	return {detection_success, pose_estimate, gaze, aus, result_emotions};
 }
 
 void InmindEmotionDetector::visualize_emotions(Mat &frame)
