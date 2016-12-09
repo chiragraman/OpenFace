@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T16:59:24-05:00
+* @Last modified time: 2016-12-08T20:40:05-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -23,8 +23,8 @@ namespace InmindDemo {
 
 struct FrameData{
 	bool success;
-	Vec6d pose_estimate;
-	vector<Point3f> gaze_estimate;
+	vector<double> pose_estimate;
+	vector<vector<float>> gaze_estimate;
 	vector<double> aus;
 	vector<double> emotions;
 };

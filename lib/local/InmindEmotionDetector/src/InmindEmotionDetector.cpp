@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T19:58:59-05:00
+* @Last modified time: 2016-12-08T20:39:36-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -45,8 +45,8 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 	//Reset data
 	result_emotions.clear();
 	current_AusReg.clear();
-	Vec6d pose_estimate;
-	vector<Point3f> gaze(2);
+	vector<double> pose;
+	vector<vector<float>> gaze(2);
 	vector<double> aus;
 
 	if (!isCfSet)
@@ -60,18 +60,23 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 	if (detection_success)
 	{
 		// Gaze tracking, absolute gaze direction
-		Point3f gaze_direction0(0, 0, -1);
-		Point3f gaze_direction1(0, 0, -1);
-		FaceAnalysis::EstimateGaze(face_model, gaze_direction0, fx, fy, cx, cy,
-								   true);
-		FaceAnalysis::EstimateGaze(face_model, gaze_direction1, fx, fy, cx, cy,
-								   false);
-		gaze[0] = gaze_direction0;
-		gaze[1] = gaze_direction1;
+		Point3f gaze_0(0, 0, -1);
+		Point3f gaze_1(0, 0, -1);
+		FaceAnalysis::EstimateGaze(face_model, gaze_0, fx, fy, cx, cy, true);
+		FaceAnalysis::EstimateGaze(face_model, gaze_1, fx, fy, cx, cy, false);
+
+		std::vector<float> gaze_left = {gaze_0.x, gaze_0.y, gaze_0.z};
+		std::vector<float> gaze_right = {gaze_1.x, gaze_1.y, gaze_1.z};
+		gaze[0] = gaze_left;
+		gaze[1] = gaze_right;
 
 		// Head pose estimation
-		pose_estimate = LandmarkDetector::GetCorrectedPoseWorld(
+		Vec6d pose_estimate = LandmarkDetector::GetCorrectedPoseWorld(
 			face_model, fx, fy, cx, cy);
+
+		for (int i = 0; i < 6; ++i) {
+			pose.push_back(pose_estimate[i]);
+		}
 
 		// Do face alignment
 		face_analyser.AddNextFrame(frame, face_model, time_stamp, online,
@@ -130,7 +135,7 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 	result_emotions.push_back(score_surprise);
 	result_emotions.push_back(decision_surprise);
 
-	return {detection_success, pose_estimate, gaze, aus, result_emotions};
+	return {detection_success, pose, gaze, aus, result_emotions};
 }
 
 void InmindEmotionDetector::visualize_emotions(Mat &frame)
