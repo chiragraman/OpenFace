@@ -2,8 +2,8 @@
 * @Author: Chirag Raman <chirag>
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
-* @Last modified by:   chirag
-* @Last modified time: 2016-12-08T20:39:41-05:00
+* @Last modified by:   root
+* @Last modified time: 2016-12-09T14:09:08-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -31,7 +31,7 @@ using namespace InmindDemo;
 
 // Use this to run from the camera with a device id like "/dev/video0" instead
 // of grabbing from an RTSP stream
-#define CAMERA_TEST (1)
+#define CAMERA_TEST (0)
 
 // Inmind sends pictures sideways over rtsp. This flag is used for correcting
 // the orientation of decoded images
