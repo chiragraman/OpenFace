@@ -31,7 +31,7 @@ InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_
 
 }
 
-vector<double> InmindEmotionDetector::DetectEmotion(Mat frame,
+vector<double> InmindEmotionDetector::process_frame(Mat frame,
 													double time_stamp)
 {
 	// If optical centers are not defined just use center of image
