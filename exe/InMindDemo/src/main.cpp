@@ -3,7 +3,7 @@
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T19:59:50-05:00
+* @Last modified time: 2016-12-08T20:00:42-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -236,7 +236,7 @@ int setup_rgb_frame(AVFrame *&frame, uint8_t *&buffer,
  template <typename Iterable>
  Json::Value iterable_to_json(Iterable const& container) {
      Json::Value v;
-     for (auto&& element: container) {
+     for (auto&& element : container) {
          v.append(element);
       }
       return v;
