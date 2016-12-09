@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T19:58:09-05:00
+* @Last modified time: 2016-12-08T19:58:59-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -122,8 +122,8 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 		prev_surprise = score_surprise;
 	}
 
-	decision_confusion = score_confusion >= threshold_confusion ? 1.0 : 0
-	decision_surprise = score_surprise >= threshold_surprise ? 1.0 : 0
+	decision_confusion = score_confusion >= threshold_confusion ? 1.0 : 0;
+	decision_surprise = score_surprise >= threshold_surprise ? 1.0 : 0;
 
 	result_emotions.push_back(score_confusion);
 	result_emotions.push_back(decision_confusion);
