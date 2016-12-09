@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T18:00:06-05:00
+* @Last modified time: 2016-12-08T19:40:12-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -129,8 +129,8 @@ vector<double> InmindEmotionDetector::process_frame(Mat frame,
 	decision_surprise = score_surprise >= threshold_surprise ? 1.0 : 0
 
 	result_emotions.push_back(score_confusion);
-	result_emotions.push_back(score_surprise);
 	result_emotions.push_back(decision_confusion);
+	result_emotions.push_back(score_surprise);
 	result_emotions.push_back(decision_surprise);
 
 	return {detection_success, pose_estimate, gaze, aus, result_emotions};
