@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T19:56:49-05:00
+* @Last modified time: 2016-12-08T19:58:09-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -29,8 +29,7 @@ InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_
 
 }
 
-vector<double> InmindEmotionDetector::process_frame(Mat frame,
-													double time_stamp)
+FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 {
 	// If optical centers are not defined just use center of image
 	float cx = frame.cols / 2.0f;
