@@ -3,7 +3,7 @@
 * @Date:   2016-11-04T11:11:49-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T19:54:53-05:00
+* @Last modified time: 2016-12-08T19:56:49-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -33,12 +33,12 @@ vector<double> InmindEmotionDetector::process_frame(Mat frame,
 													double time_stamp)
 {
 	// If optical centers are not defined just use center of image
-	cx = frame.cols / 2.0f;
-	cy = frame.rows / 2.0f;
+	float cx = frame.cols / 2.0f;
+	float cy = frame.rows / 2.0f;
 
 	// Use a rough guess-timate of focal length
-	fx = 500 * (frame.cols / 640.0);
-	fy = 500 * (frame.rows / 480.0);
+	float fx = 500 * (frame.cols / 640.0);
+	float fy = 500 * (frame.rows / 480.0);
 
 	fx = (fx + fy) / 2.0;
 	fy = fx;
