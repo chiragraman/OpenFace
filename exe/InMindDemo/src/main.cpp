@@ -3,7 +3,7 @@
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-08T19:51:09-05:00
+* @Last modified time: 2016-12-08T19:59:50-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -317,7 +317,7 @@ std::string response_message(const FrameData &data, double pts) {
              cv::waitKey(1);
 #endif
              FrameData data = emotion_detector->process_frame(image_mat, 0);
-             response_string = response_message(data, pts);
+             std::string response_string = response_message(data, pts);
 
              zmq::message_t response(response_string.size());
              memcpy(response.data(), response_string.data(),
