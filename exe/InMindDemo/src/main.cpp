@@ -2,12 +2,13 @@
 * @Author: Chirag Raman <chirag>
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
-* @Last modified by:   root
-* @Last modified time: 2016-12-09T14:09:08-05:00
+* @Last modified by:   chirag
+* @Last modified time: 2016-12-15T13:56:12-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
 #include <iostream>
+#include <random>
 #include <string>
 
 extern "C" {
@@ -233,6 +234,26 @@ int setup_rgb_frame(AVFrame *&frame, uint8_t *&buffer,
 /********
  * DECODE
  *******/
+
+double get_F0() {
+    const double lower_bound = 85;
+    const double upper_bound = 230;
+    std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
+    std::random_device rand_dev;
+    std::mt19937 rand_engine(rand_dev());
+    return unif(rand_engine);
+}
+
+double get_energy() {
+    const double lower_bound = 65;
+    const double upper_bound = 76;
+    std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
+    std::random_device rand_dev;
+    std::mt19937 rand_engine(rand_dev());
+    return unif(rand_engine);
+}
+
+
  template <typename Iterable>
  Json::Value iterable_to_json(Iterable const& container) {
      Json::Value v;
@@ -255,6 +276,9 @@ std::string response_message(const FrameData &data, double pts) {
     root["features"]["gaze"] = gaze;
     root["features"]["pose"] = iterable_to_json(data.pose_estimate);
     root["features"]["action_units"] = iterable_to_json(data.aus);
+
+    root["features"]["F0"] = get_F0();
+    root["features"]["energy"] = get_energy();
 
     root["emotions"]["confusion"] = iterable_to_json(
         std::vector<double> (data.emotions.begin(), data.emotions.begin() + 2)
