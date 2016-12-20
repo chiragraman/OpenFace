@@ -3,7 +3,7 @@
 * @Date:   2016-05-09T21:14:02-04:00
 * @Email:  chirag.raman@gmail.com
 * @Last modified by:   chirag
-* @Last modified time: 2016-12-15T13:56:12-05:00
+* @Last modified time: 2016-12-19T15:11:46-05:00
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
@@ -237,7 +237,7 @@ int setup_rgb_frame(AVFrame *&frame, uint8_t *&buffer,
 
 double get_F0() {
     const double lower_bound = 85;
-    const double upper_bound = 230;
+    const double upper_bound = 180;
     std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
     std::random_device rand_dev;
     std::mt19937 rand_engine(rand_dev());
