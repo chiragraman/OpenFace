@@ -284,8 +284,9 @@ double RapportAnalyser::PredictArousal(const LandmarkDetector::CLNF& face_model,
 		return (arousal- 0.5) / 3.5;
 	}
 }
-void RapportAnalyser::AddObservation(const LandmarkDetector::CLNF& face_model, const FaceAnalyser& face_analyser, const Point3f& gaze_left, const Point3f& gaze_right, double fx, double fy, double cx, double cy)
-{
+void RapportAnalyser::AddObservation(const LandmarkDetector::CLNF& face_model,
+    FaceAnalyser& face_analyser, const Point3f& gaze_left,
+    const Point3f& gaze_right, double fx, double fy, double cx, double cy) {
 	double time = face_analyser.GetCurrentTimeSeconds();
 
 	if (!face_model.detection_success)

@@ -17,7 +17,7 @@ public:
 	RapportAnalyser(std::string config_location = "rapport_config/config.txt");
 
 	// Adding the observation of the current track and the face_analyser
-	void AddObservation(const LandmarkDetectorModel::CLNF& face_model, const FaceAnalyser& face_analyser, const Point3f& gaze_left, const Point3f& gaze_right, double fx, double fy, double cx, double cy);
+	void AddObservation(const LandmarkDetector::CLNF& face_model, FaceAnalyser& face_analyser, const Point3f& gaze_left, const Point3f& gaze_right, double fx, double fy, double cx, double cy);
 
 	double GetRapportEstimate();
 	double GetAttentionEstimate();
@@ -28,11 +28,12 @@ public:
 
 	double GetSpeech();
 
-	string RapportAnalyser::GetAllContent();
+	string GetAllContent();
 
 private:
 
-	double RapportAnalyser::PredictArousal(const LandmarkDetector::CLNF& face_model, const FaceAnalyser& face_analyser);
+	double PredictArousal(const LandmarkDetector::CLNF& face_model,
+                          const FaceAnalyser& face_analyser);
 
 	cv::Mat_<double> geom_desc_track;
 
