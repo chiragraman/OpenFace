@@ -30,7 +30,7 @@ InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_
 
 }
 
-static double smooth(const double &a, const double &b) {
+double InmindEmotionDetector::smooth(const double &a, const double &b) {
     double alpha = 0.15;
     return alpha * a + (1 - alpha) * b;
 }
