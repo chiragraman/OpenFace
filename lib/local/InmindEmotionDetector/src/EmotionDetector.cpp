@@ -284,14 +284,14 @@ vector<double> EmotionDetector::predict_emotions(
 
     // We don't have 16, 23; 20 is not reliable
     double AU1 = 0.0;
-    double AU2 = 0.0
+    double AU2 = 0.0;
     double AU4 = 0.0;
     double AU5 = 0.0;
     double AU6 = 0.0;
     double AU7 = 0.0;
     double AU9 = 0.0;
     double AU12 = 0.0;
-    double AU15 = 0.0
+    double AU15 = 0.0;
     double AU26 = 0.0;
 
 
@@ -316,7 +316,7 @@ vector<double> EmotionDetector::predict_emotions(
     double sadness = (AU1 + AU4 + AU15) / (3 * max_AU);
     double surprise = (AU1 + AU2 + AU5 + AU26) / (4 * max_AU);
     double fear = (AU1 + AU2 + AU4 + AU5 + AU7 + AU26) / (6 * max_AU);
-    double anger = (AU4 + AU5 + AU7 + AU23) / (4 * max_AU);
+    double anger = (AU4 + AU5 + AU7) / (4 * max_AU);
     double disgust = (AU9 + AU15) / (2 * max_AU);
     double confusion = (AU4) / (max_AU);
 
