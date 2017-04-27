@@ -280,12 +280,13 @@ std::string response_message(const FrameData &data, double pts) {
     root["features"]["F0"] = get_F0();
     root["features"]["energy"] = get_energy();
 
-    root["emotions"]["confusion"] = iterable_to_json(
-        std::vector<double> (data.emotions.begin(), data.emotions.begin() + 2)
-    );
-    root["emotions"]["surprise"] = iterable_to_json(
-        std::vector<double> (data.emotions.begin() + 2, data.emotions.end())
-    );
+    root["emotions"]["happiness"] = data.emotions[0];
+    root["emotions"]["sadness"] = data.emotions[1];
+    root["emotions"]["surprise"] = data.emotions[2];
+    root["emotions"]["fear"] = data.emotions[3];
+    root["emotions"]["anger"] = data.emotions[4];
+    root["emotions"]["disgust"] = data.emotions[5];
+    root["emotions"]["confusion"] = data.emotions[6];
 
     Json::FastWriter fastwriter;
     std::string message = fastwriter.write(root);

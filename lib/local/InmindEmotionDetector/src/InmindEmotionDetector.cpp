@@ -8,10 +8,11 @@
 */
 
 #include "InmindEmotionDetector.h"
+#include <algorithm>
 
 using namespace InmindDemo;
 
-InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_path().string()),face_model(root_path +"/model/main_clnf_general.txt"),face_analyser(vector<cv::Vec3d>(), 0.7, 112, 112, root_path +"/AU_predictors/AU_all_best.txt", root_path +"/model/tris_68_full.txt")
+InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_path().string()),face_model(root_path +"/model/main_clnf_general.txt"),face_analyser(vector<cv::Vec3d>(), 0.7, 112, 112, root_path +"/AU_predictors/AU_all_best.txt", root_path +"/model/tris_68_full.txt"), previous_emotions(7, 0.0)
 {
 	vector<string> arguments;
 	arguments.push_back(s);
@@ -29,6 +30,10 @@ InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_
 
 }
 
+double smooth(const double &a, const double &b) {
+    return alpha * a + (1 - alpha) * b;
+}
+
 FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 {
 	// If optical centers are not defined just use center of image
@@ -43,6 +48,7 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 	fy = fx;
 
 	//Reset data
+	vector<double> emotions(7, 0.0);
 	result_emotions.clear();
 	current_AusReg.clear();
 	vector<double> pose;
@@ -100,40 +106,14 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 			aus.push_back(current_AusReg[it].second);
 		}
 
-		score_confusion = detector.predict_confusion(current_AusReg);
-		score_surprise = detector.predict_surprise(current_AusReg);
-	}
-	else
-	{
-		score_confusion = 0;
-		score_surprise = 0;
+        // Calculate emotions
+        emotions = detector.predict_emotions(current_AusReg);
 	}
 
-	if(prev_confusion < 0)
-	{
-		prev_confusion = score_confusion;
-	}else
-	{
-		score_confusion = alpha * prev_confusion + (1-alpha) * score_confusion;
-		prev_confusion = score_confusion;
-	}
-
-	if(prev_surprise < 0)
-	{
-		prev_surprise = score_surprise;
-	}else
-	{
-		score_surprise = alpha * prev_surprise + (1-alpha)* score_surprise;
-		prev_surprise = score_surprise;
-	}
-
-	decision_confusion = score_confusion >= threshold_confusion ? 1.0 : 0;
-	decision_surprise = score_surprise >= threshold_surprise ? 1.0 : 0;
-
-	result_emotions.push_back(score_confusion);
-	result_emotions.push_back(decision_confusion);
-	result_emotions.push_back(score_surprise);
-	result_emotions.push_back(decision_surprise);
+    // Smooth the emotion values
+    std::transform(emotions.begin(), emotions.end(), previous_emotions.begin(),
+                   emotions.begin(), smooth);
+    previous_emotions = emotions;
 
 	return {detection_success, pose, gaze, aus, result_emotions};
 }

@@ -57,16 +57,9 @@ private:
 	double threshold_confusion;
 	double threshold_surprise;
 
-    // Store old prediction
-	double prev_confusion = -1.0;
-	double prev_surprise = -1.0;
+    // Store old predictions
+    vector<double> previous_emotions;
 	double alpha = 0.15;
-
-	// Scores
-	double score_confusion;
-	double score_surprise;
-	double decision_confusion;
-	double decision_surprise;
 
 	// Set cf flag
 	bool isCfSet = false;
@@ -81,6 +74,9 @@ private:
 	// Get thresholds for confusion and surprise
 	double get_confusion_thres(string root, string thres_path);
 	double get_surprise_thres(string root, string thres_path);
+
+    // Smoothing helper
+    double smooth(const double &a, const double &b);
 
 };
 } /* InmindDemo */

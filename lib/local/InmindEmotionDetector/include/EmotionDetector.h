@@ -112,9 +112,8 @@ namespace EmotionRecognition {
 		cv::Mat_<uchar> get_gray(cv::Mat captured_image);
 		int get_pose_estimate(const LandmarkDetector::CLNF& clnf_model);
 		int get_gaze_direction(const LandmarkDetector::FaceModelParameters det_parameters, bool detection_sucess, const LandmarkDetector::CLNF face_model);
-	
-		double predict_confusion(vector<pair<string, double> > current_AUsReg);
-		double predict_surprise(vector<pair<string, double> > current_AUsReg);
+
+        vector<double> predict_emotions(vector<pair<string, double> > current_AUsReg);
 	};
 
 }

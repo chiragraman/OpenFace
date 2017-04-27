@@ -277,59 +277,55 @@ void EmotionDetector::get_output_feature_params(vector<string> &arguments)
 	}
 }
 
-double EmotionDetector::predict_confusion(vector<pair<string, double> > current_AUsReg)
-{
-	double score = 0.0;
-	int numOfAUs = 0;
-	string AUName = "";
-	double AUScore = 0.0;
-	for (size_t i = 0; i < current_AUsReg.size(); i++)
-	{
-		AUName = current_AUsReg[i].first;
-		AUScore = current_AUsReg[i].second;
-		if (AUName == "AU04")
-		{
-			score += AUScore;
-			numOfAUs++;
-		}
-	}
-	score /= numOfAUs;
-	return max(score, 0.0);
-}
-double EmotionDetector::predict_surprise(vector<pair<string, double> > current_AUsReg)
-{
-	double score = 0.0;
-	int numOfAUs = 0;
-	string AUName = "";
-	double AUScore = 0.0;
+vector<double> EmotionDetector::predict_emotions(
+    vector<pair<string, double> > current_AUsReg) {
 
-	for (size_t i = 0; i < current_AUsReg.size(); i++)
-	{
-		AUName = current_AUsReg[i].first;
-		AUScore = current_AUsReg[i].second;
-		if (AUName == "AU01")
-		{
-			score += AUScore;
-			numOfAUs++;
-		}
-		else if (AUName == "AU02")
-		{
-			score += AUScore;
-			numOfAUs++;
-		}
-		else if (AUName == "AU05")
-		{
-			score += AUScore;
-			numOfAUs++;
-		}
-		else if (AUName == "AU26")
-		{
-			score += AUScore;
-			numOfAUs++;
-		}
-	}
-	score /= numOfAUs;
-	return max(score,0.0);
+    vector<double> emotions;
+
+    // We don't have 16, 23; 20 is not reliable
+    double AU1 = 0.0;
+    double AU2 = 0.0
+    double AU4 = 0.0;
+    double AU5 = 0.0;
+    double AU6 = 0.0;
+    double AU7 = 0.0;
+    double AU9 = 0.0;
+    double AU12 = 0.0;
+    double AU15 = 0.0
+    double AU26 = 0.0;
+
+
+    for (size_t i = 0; i < current_AUsReg.size(); i++)
+    {
+        string AUName = current_AUsReg[i].first;
+        double AUScore = max(current_AUsReg[i].second, 0.0);
+        if (AUName == "AU01"){ AU1 = AUScore; }
+        else if (AUName == "AU02") { AU2 = AUScore; }
+        else if (AUName == "AU04") { AU4 = AUScore; }
+        else if (AUName == "AU05") { AU5 = AUScore; }
+        else if (AUName == "AU06") { AU6 = AUScore; }
+        else if (AUName == "AU07") { AU7 = AUScore; }
+        else if (AUName == "AU09") { AU9 = AUScore; }
+        else if (AUName == "AU12") { AU12 = AUScore; }
+        else if (AUName == "AU15") { AU15 = AUScore; }
+        else if (AUName == "AU26") { AU26 = AUScore; }
+    }
+
+    double max_AU = 4.0;
+    double happiness = (AU6 + AU12) / (2 * max_AU);
+    double sadness = (AU1 + AU4 + AU15) / (3 * max_AU);
+    double surprise = (AU1 + AU2 + AU5 + AU26) / (4 * max_AU);
+    double fear = (AU1 + AU2 + AU4 + AU5 + AU7 + AU26) / (6 * max_AU);
+    double anger = (AU4 + AU5 + AU7 + AU23) / (4 * max_AU);
+    double disgust = (AU9 + AU15) / (2 * max_AU);
+    double confusion = (AU4) / (max_AU);
+
+    emotions = {happiness, sadness, surprise, fear, anger, disgust, confusion};
+    for_each(emotions.begin(), emotions.end(), [](double &val){
+        val = max(0.0, min(1.0, val));}
+    );
+
+    return emotions;
 }
 
 void EmotionDetector::output_HOG_frame(std::ofstream* hog_file, bool good_frame, const cv::Mat_<double>& hog_descriptor, int num_rows, int num_cols)
