@@ -30,7 +30,8 @@ InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_
 
 }
 
-double smooth(const double &a, const double &b) {
+static double smooth(const double &a, const double &b) {
+    double alpha = 0.15;
     return alpha * a + (1 - alpha) * b;
 }
 
@@ -118,45 +119,45 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 	return {detection_success, pose, gaze, aus, result_emotions};
 }
 
-void InmindEmotionDetector::visualize_emotions(Mat &frame)
-{
-	string face_detected = "false";
-	string confusion_sco;
-	string surprise_sco;
-	string confusion_dec = "No Confusion Detected";
-	string surprise_dec = "No Surprise Detected";
-
-	if (detection_success)
-	{
-		face_detected = "true";
-	}
-	if (score_confusion >= threshold_confusion)
-	{
-		confusion_dec = "Confusion Detected";
-	}
-	if (score_surprise >= threshold_surprise)
-	{
-		surprise_dec = "Surprise Detected";
-	}
-
-	face_detected = "Face Detected: " + face_detected;
-	confusion_sco = "Confusion Score: " + to_string(score_confusion);
-	surprise_sco = "Surprise Score: " + to_string(score_surprise);
-	confusion_dec = "Confusion Decision: " + confusion_dec;
-	surprise_dec = "Surprise Decision: " + surprise_dec;
-
-	putText(frame, face_detected, cvPoint(20, 30),
-		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
-	putText(frame, confusion_sco, cvPoint(20, 50),
-		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
-	putText(frame, confusion_dec, cvPoint(20, 70),
-		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
-	putText(frame, surprise_sco, cvPoint(20, 90),
-		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
-	putText(frame, surprise_dec, cvPoint(20, 110),
-		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
-
-}
+// void InmindEmotionDetector::visualize_emotions(Mat &frame)
+// {
+// 	string face_detected = "false";
+// 	string confusion_sco;
+// 	string surprise_sco;
+// 	string confusion_dec = "No Confusion Detected";
+// 	string surprise_dec = "No Surprise Detected";
+//
+// 	if (detection_success)
+// 	{
+// 		face_detected = "true";
+// 	}
+// 	if (score_confusion >= threshold_confusion)
+// 	{
+// 		confusion_dec = "Confusion Detected";
+// 	}
+// 	if (score_surprise >= threshold_surprise)
+// 	{
+// 		surprise_dec = "Surprise Detected";
+// 	}
+//
+// 	face_detected = "Face Detected: " + face_detected;
+// 	confusion_sco = "Confusion Score: " + to_string(score_confusion);
+// 	surprise_sco = "Surprise Score: " + to_string(score_surprise);
+// 	confusion_dec = "Confusion Decision: " + confusion_dec;
+// 	surprise_dec = "Surprise Decision: " + surprise_dec;
+//
+// 	putText(frame, face_detected, cvPoint(20, 30),
+// 		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+// 	putText(frame, confusion_sco, cvPoint(20, 50),
+// 		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+// 	putText(frame, confusion_dec, cvPoint(20, 70),
+// 		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+// 	putText(frame, surprise_sco, cvPoint(20, 90),
+// 		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+// 	putText(frame, surprise_dec, cvPoint(20, 110),
+// 		FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+//
+// }
 
 double InmindEmotionDetector::get_confusion_thres(string root, string thres_path)
 {

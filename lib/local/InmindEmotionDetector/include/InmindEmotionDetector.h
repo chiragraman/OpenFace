@@ -76,7 +76,7 @@ private:
 	double get_surprise_thres(string root, string thres_path);
 
     // Smoothing helper
-    double smooth(const double &a, const double &b);
+    static double smooth(const double &a, const double &b);
 
 };
 } /* InmindDemo */
