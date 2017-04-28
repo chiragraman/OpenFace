@@ -12,6 +12,8 @@
 #ifndef InmindDemo_InmindEmotionDetector_H_
 #define InmindDemo_InmindEmotionDetector_H_
 
+#include <RapportAnalyser.h>
+
 #include "EmotionDetector.h"
 
 using namespace std;
@@ -27,6 +29,7 @@ struct FrameData{
 	vector<vector<float>> gaze_estimate;
 	vector<double> aus;
 	vector<double> emotions;
+    vector<double> rapport_metrics;
 };
 
 class InmindEmotionDetector {
@@ -41,6 +44,7 @@ private:
 	LandmarkDetector::FaceModelParameters det_parameters;
 	LandmarkDetector::CLNF face_model;
 	FaceAnalysis::FaceAnalyser face_analyser;
+    FaceAnalysis::RapportAnalyser rapport_analyser;
 
 	bool detection_success = false;
 	bool online = true;

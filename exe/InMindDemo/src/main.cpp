@@ -288,6 +288,13 @@ std::string response_message(const FrameData &data, double pts) {
     root["emotions"]["disgust"] = data.emotions[5];
     root["emotions"]["confusion"] = data.emotions[6];
 
+    root["affect"]["rapport"] = data.rapport_metrics[0];
+    root["affect"]["attention"] = data.rapport_metrics[1];
+    root["affect"]["valence"] = data.rapport_metrics[2];
+    root["affect"]["arousal"] = data.rapport_metrics[3];
+    root["affect"]["eye_attention"] = data.rapport_metrics[4];
+    root["affect"]["head_attention"] = data.rapport_metrics[5];
+
     Json::FastWriter fastwriter;
     std::string message = fastwriter.write(root);
     return message;

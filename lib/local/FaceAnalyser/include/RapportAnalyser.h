@@ -9,7 +9,7 @@ using namespace cv;
 
 namespace FaceAnalysis
 {
-class RapportAnalyser{
+class RapportAnalyser {
 
 public:
 
