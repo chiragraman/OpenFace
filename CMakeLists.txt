@@ -98,6 +98,17 @@ foreach(file ${files})
 	endif(MSVC)
 endforeach()
 
+# Move Rapport config modules
+file(GLOB files "lib/local/FaceAnalyser/rapport_config/*.txt")
+foreach(file ${files})
+	if (MSVC)
+		file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR}/bin/Debug/rapport_config)
+		file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR}/bin/Release/rapport_config)
+	else(MSVC)
+		file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR}/bin/rapport_config)
+	endif(MSVC)
+endforeach()
+
 # Move AU prediction modules
 file(GLOB files "lib/local/FaceAnalyser/AU_predictors/*.txt")
 foreach(file ${files})

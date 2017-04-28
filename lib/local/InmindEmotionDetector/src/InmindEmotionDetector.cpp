@@ -12,7 +12,7 @@
 
 using namespace InmindDemo;
 
-InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_path().string()),face_model(root_path +"/model/main_clnf_general.txt"),face_analyser(vector<cv::Vec3d>(), 0.7, 112, 112, root_path +"/AU_predictors/AU_all_best.txt", root_path +"/model/tris_68_full.txt"), rapport_analyser(), previous_emotions(7, 0.0)
+InmindEmotionDetector::InmindEmotionDetector(string s):root_path(path(s).parent_path().string()),face_model(root_path +"/model/main_clnf_general.txt"),face_analyser(vector<cv::Vec3d>(), 0.7, 112, 112, root_path +"/AU_predictors/AU_all_best.txt", root_path +"/model/tris_68_full.txt"), rapport_analyser(root_path+"/rapport_config/config.txt"), previous_emotions(7, 0.0)
 {
 	vector<string> arguments;
 	arguments.push_back(s);
@@ -50,7 +50,6 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 	//Reset data
 	vector<double> emotions(7, 0.0);
     vector<double> rapport_metrics(6, 0.0);
-	result_emotions.clear();
 	current_AusReg.clear();
 	vector<double> pose;
 	vector<vector<float>> gaze(2);
@@ -108,10 +107,8 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
 		}
 
         // Calculate rapport metrics
-        Point3f g_left(gaze_0.x, gaze_0.y, gaze_0.z);
-        Point3f g_right(gaze_1.x, gaze_1.y, gaze_1.z);
-        rapport_analyser.AddObservation(face_model, face_analyser, g_left,
-                                        g_right, fx, fy, cx, cy);
+        rapport_analyser.AddObservation(face_model, face_analyser, gaze_0,
+                                        gaze_1, fx, fy, cx, cy);
 
         rapport_metrics = { rapport_analyser.GetRapportEstimate(),
                             rapport_analyser.GetAttentionEstimate(),
@@ -129,7 +126,7 @@ FrameData InmindEmotionDetector::process_frame(Mat frame, double time_stamp)
                    emotions.begin(), smooth);
     previous_emotions = emotions;
 
-	return {detection_success, pose, gaze, aus, result_emotions,
+	return {detection_success, pose, gaze, aus, emotions,
             rapport_metrics};
 }
 

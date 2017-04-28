@@ -72,9 +72,6 @@ private:
 	Mat_<uchar> grayscale_image;
 	vector<pair<string, double> > current_AusReg;
 
-	// final predictions and decisions
-	vector<double> result_emotions;
-
 	// Get thresholds for confusion and surprise
 	double get_confusion_thres(string root, string thres_path);
 	double get_surprise_thres(string root, string thres_path);

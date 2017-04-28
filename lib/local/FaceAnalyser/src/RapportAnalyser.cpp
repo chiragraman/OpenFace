@@ -520,12 +520,12 @@ void RapportAnalyser::AddObservation(const LandmarkDetector::CLNF& face_model,
 
 	double time_passed = time - prev_time_step;
 
-	if (time_passed > 0)
-	{
-		cummulator = cummulator * time_passed / 75.0;
-		cummulator_attention = cummulator_attention * time_passed / 75.0;
-		cummulator_valence = cummulator_valence * time_passed / 75.0;
-	}
+	// if (time_passed > 0)
+	// {
+		cummulator = cummulator * time_passed / 25.0;
+		cummulator_attention = cummulator_attention * time_passed / 25.0;
+		cummulator_valence = cummulator_valence * time_passed / 25.0;
+	// }
 
 	// Do not let a single frame change by more that 0.5
 	if (cummulator > max_rate_of_change)
@@ -542,6 +542,9 @@ void RapportAnalyser::AddObservation(const LandmarkDetector::CLNF& face_model,
 	current_rapport = smoothing_factor * current_rapport + (1.0-smoothing_factor) * (old_rapport + cummulator);
 	current_attention = smoothing_factor * current_attention + (1.0-smoothing_factor) * (old_attention + cummulator_attention);
 	current_valence = smoothing_factor * current_valence + (1.0-smoothing_factor) * (old_valence + cummulator_valence);
+
+    std::cout << "Curr valence: " << current_valence
+              << "Cumm valence: " << cummulator_valence << std::endl;
 
 	if (current_rapport < min_rapport)
 		current_rapport = min_rapport;

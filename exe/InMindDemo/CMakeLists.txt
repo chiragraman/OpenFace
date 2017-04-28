@@ -12,7 +12,7 @@ set( SOURCE_EXT_PATTERN ".cpp" )
 set( HEADER_EXT_PATTERN ".h" )
 
 # rename to your name here
-set( PROJECT_NAME ffmpeg_recorder )
+set( PROJECT_NAME InMindDemo )
 
 # define project for C++ language
 project( ${PROJECT_NAME} CXX )

@@ -7,6 +7,7 @@
 * @License: Copyright (C) 2016 Multicomp Lab. All rights reserved.
 */
 
+#include <chrono>
 #include <iostream>
 #include <random>
 #include <string>
@@ -32,11 +33,11 @@ using namespace InmindDemo;
 
 // Use this to run from the camera with a device id like "/dev/video0" instead
 // of grabbing from an RTSP stream
-#define CAMERA_TEST (0)
+#define CAMERA_TEST (1)
 
 // Inmind sends pictures sideways over rtsp. This flag is used for correcting
 // the orientation of decoded images
-#define INMIND_RTSP_CORRECTION (1)
+#define INMIND_RTSP_CORRECTION (0)
 
 // Used for drawing the decoded image to screen
 #define DISPLAY_FRAME (0)
@@ -66,6 +67,13 @@ std::string media_type_string(enum AVMediaType media_type) {
     }
 }
 
+// Returns milliseonds since epoch
+double milliseconds_since_epoch() {
+    auto now = std::chrono::system_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds> (
+        now.time_since_epoch()).count();
+    return ms;
+}
 
 /********
  * STATIC VARIABLES
@@ -348,7 +356,8 @@ std::string response_message(const FrameData &data, double pts) {
              cv::imshow("RTSP image",image_mat);
              cv::waitKey(1);
 #endif
-             FrameData data = emotion_detector->process_frame(image_mat, 0);
+             FrameData data = emotion_detector->process_frame(image_mat,
+                milliseconds_since_epoch());
              std::string response_string = response_message(data, pts);
 
              zmq::message_t response(response_string.size());
