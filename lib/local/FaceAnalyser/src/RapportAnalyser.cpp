@@ -543,9 +543,6 @@ void RapportAnalyser::AddObservation(const LandmarkDetector::CLNF& face_model,
 	current_attention = smoothing_factor * current_attention + (1.0-smoothing_factor) * (old_attention + cummulator_attention);
 	current_valence = smoothing_factor * current_valence + (1.0-smoothing_factor) * (old_valence + cummulator_valence);
 
-    std::cout << "Curr valence: " << current_valence
-              << "Cumm valence: " << cummulator_valence << std::endl;
-
 	if (current_rapport < min_rapport)
 		current_rapport = min_rapport;
 	if (current_rapport > max_rapport)
